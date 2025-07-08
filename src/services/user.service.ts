@@ -1,12 +1,20 @@
 import { AppDataSource } from '../config/data-source';
 import { User } from '../models/user.entity';
 
-export const getAllUsers = async () => {
-  return AppDataSource.getRepository(User).find();
+const userRepo = AppDataSource.getRepository(User);
+
+export const getAllUsers = () => userRepo.find();
+
+export const getUserById = (id: number) => userRepo.findOneBy({ id });
+
+export const createUser = (data: Partial<User>) => {
+  const user = userRepo.create(data);
+  return userRepo.save(user);
 };
 
-export const createUser = async (userData: Partial<User>) => {
-  const repo = AppDataSource.getRepository(User);
-  const newUser = repo.create(userData);
-  return repo.save(newUser);
+export const updateUser = async (id: number, data: Partial<User>) => {
+  await userRepo.update(id, data);
+  return getUserById(id);
 };
+
+export const deleteUser = (id: number) => userRepo.delete(id);
