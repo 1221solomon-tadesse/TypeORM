@@ -10,7 +10,7 @@ import {
 import { CreateUserDto } from '../dto/user.dto';
 
 export class UserController {
-  listUsers: RequestHandler = async (req: Request, res: Response) => {
+  listUsers: RequestHandler = async (_req: Request, res: Response) => {
     const users = await getAllUsers();
     res.json(users); 
   };
