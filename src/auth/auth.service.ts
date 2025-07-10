@@ -36,7 +36,6 @@ export class AuthService {
       password: hashedPassword,
       isVerified: false,
     });
-
     const savedUser = await this.userRepo.save(user);
 
     const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET, {
