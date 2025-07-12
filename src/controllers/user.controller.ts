@@ -1,5 +1,6 @@
 import { Request, Response, RequestHandler } from 'express';
 import { validate } from 'class-validator';
+import { plainToInstance } from 'class-transformer';
 import {
   getAllUsers,
   getUserById,
@@ -26,7 +27,7 @@ export class UserController {
   };
 
   registerUser: RequestHandler = async (req: Request, res: Response) => {
-    const dto = Object.assign(new CreateUserDto(), req.body);
+     const dto = plainToInstance(CreateUserDto, req.body);
     const errors = await validate(dto);
     if (errors.length > 0) {
       res.status(400).json(errors);
