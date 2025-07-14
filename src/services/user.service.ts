@@ -12,12 +12,10 @@ export const createUser = async (data: Partial<User>) => {
   if (!data.email || !data.password || !data.name) {
     throw new Error('Name, email, and password are required');
   }
-
   const existingUser = await userRepo.findOneBy({ email: data.email });
   if (existingUser) {
     throw new Error('User with this email already exists');
   }
-
   // Hash the password
   const hashedPassword = await bcrypt.hash(data.password, 10);
 
@@ -36,7 +34,6 @@ export const updateUser = async (id: number, data: Partial<User>) => {
   if (data.password) {
     data.password = await bcrypt.hash(data.password, 10);
   }
-
   await userRepo.update(id, data);
   return getUserById(id);
 };

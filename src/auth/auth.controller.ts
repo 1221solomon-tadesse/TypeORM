@@ -10,7 +10,6 @@ export class AuthController {
   register: RequestHandler = async (req: Request, res: Response) => {
     const dto = plainToInstance(LoginDto, req.body);
     const errors = await validate(dto);
-
     if (errors.length > 0) {
       res.status(400).json({ message: 'Validation failed', errors });
       return;
@@ -59,5 +58,6 @@ export class AuthController {
     } catch (error: any) {
       res.status(400).json({ message: error.message || 'Email verification failed' });
     }
+
   };
 }
