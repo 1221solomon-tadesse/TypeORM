@@ -195,4 +195,88 @@ router.post('/login', authController.login.bind(authController));
  */
 router.get('/verify-email/:token', authController.verifyEmail.bind(authController));
 
+/**
+ * @swagger
+ * /api/auth/forgot-password:
+ *   post:
+ *     summary: Request password reset email
+ *     description: Sends a password reset email with a token to the user if the email exists.
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 description: User's email address to send the reset link to
+ *                 example: john.doe@example.com
+ *     responses:
+ *       200:
+ *         description: Password reset email sent (even if email not found, for security)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: If the email exists, a reset link has been sent.
+ *       400:
+ *         description: Validation failed
+ *       500:
+ *         description: Server error
+ */
+router.post('/forgot-password', authController.requestPasswordReset.bind(authController));
+
+/**
+ * @swagger
+ * /api/auth/reset-password/{token}:
+ *   post:
+ *     summary: Reset password using token
+ *     description: Resets the user's password given a valid reset token and new password.
+ *     tags: [Auth]
+ *     parameters:
+ *       - in: path
+ *         name: token
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example: abc123resetTokenXYZ
+ *         description: Password reset token from email
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - newPassword
+ *             properties:
+ *               newPassword:
+ *                 type: string
+ *                 description: The new password (minimum length and validation should be applied)
+ *                 example: NewPassword123!
+ *     responses:
+ *       200:
+ *         description: Password reset successful
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Password has been reset successfully.
+ *       400:
+ *         description: Invalid or expired token, or validation failed
+ *       500:
+ *         description: Server error
+ */
+router.post('/reset-password/:token', authController.resetPassword.bind(authController));
+
 export default router;

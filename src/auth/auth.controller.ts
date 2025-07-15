@@ -1,6 +1,8 @@
 import { Request, Response, RequestHandler } from 'express';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dtos/login.dto';
+import { RequestResetDto } from './dtos/request-reset.dto';
+import { ResetPasswordDto } from './dtos/reset-password.dto';
 import { validate } from 'class-validator';
 import { plainToInstance } from 'class-transformer';
 
@@ -10,14 +12,9 @@ export class AuthController {
   register: RequestHandler = async (req: Request, res: Response) => {
     const dto = plainToInstance(LoginDto, req.body);
     const errors = await validate(dto);
-    if (errors.length > 0) {
-      res.status(400).json({ message: 'Validation failed', errors });
-      return;
-    }
 
-    // Manual validation for name in registration
-    if (!dto.name) {
-      res.status(400).json({ message: 'Validation failed', errors: [{ msg: 'Name is required for registration', param: 'name' }] });
+    if (errors.length > 0 || !dto.name) {
+      res.status(400).json({ message: 'Validation failed', errors });
       return;
     }
 
@@ -58,6 +55,40 @@ export class AuthController {
     } catch (error: any) {
       res.status(400).json({ message: error.message || 'Email verification failed' });
     }
+  };
 
+  requestPasswordReset: RequestHandler = async (req: Request, res: Response) => {
+    const dto = plainToInstance(RequestResetDto, req.body);
+    const errors = await validate(dto);
+
+    if (errors.length > 0) {
+      res.status(400).json({ message: 'Validation failed', errors });
+      return;
+    }
+
+    try {
+      await this.authService.sendPasswordResetEmail(dto.email);
+      res.status(200).json({ message: 'Password reset link sent to your email' });
+    } catch (error: any) {
+      res.status(400).json({ message: error.message || 'Failed to send reset email' });
+    }
+  };
+
+  resetPassword: RequestHandler = async (req: Request, res: Response) => {
+    const { token } = req.params;
+    const dto = plainToInstance(ResetPasswordDto, req.body);
+    const errors = await validate(dto);
+
+    if (errors.length > 0) {
+      res.status(400).json({ message: 'Validation failed', errors });
+      return;
+    }
+
+    try {
+      await this.authService.resetPassword(token, dto.password);
+      res.status(200).json({ message: 'Password has been reset successfully' });
+    } catch (error: any) {
+      res.status(400).json({ message: error.message || 'Password reset failed' });
+    }
   };
 }

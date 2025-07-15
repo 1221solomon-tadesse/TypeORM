@@ -1,4 +1,3 @@
-// src/auth/auth.service.ts
 import { AppDataSource } from '../config/data-source';
 import { User } from '../models/user.entity';
 import bcrypt from 'bcrypt';
@@ -6,6 +5,7 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
 import { LoginDto } from './dtos/login.dto';
 import crypto from 'crypto';
+import { Any } from 'typeorm';
 
 export class AuthService {
   private userRepo = AppDataSource.getRepository(User);
@@ -113,7 +113,7 @@ export class AuthService {
     }
   }
 
-  async sendResetPasswordEmail(email: string): Promise<void> {
+  async sendPasswordResetEmail(email: string): Promise<void> {
     const user = await this.userRepo.findOneBy({ email });
     if (!user) throw new Error('User not found');
 

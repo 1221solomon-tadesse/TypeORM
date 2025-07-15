@@ -16,13 +16,13 @@ export class User {
 
   @Column({ default: false })
   isVerified!: boolean;
-  
-  @Column({ nullable: true })
-verificationToken!: string;
 
-  @Column({ nullable: true })
-  resetToken?: string;
+  @Column({ type: 'varchar', nullable: true })
+  verificationToken!: string | null;
 
-  @Column({ nullable: true })
-  resetTokenExpiry?: Date;
+  @Column({ type: 'varchar', nullable: true })
+  resetToken!: string | null;
+
+  @Column({ type: 'timestamp', nullable: true })
+  resetTokenExpiry!: Date | null;
 }

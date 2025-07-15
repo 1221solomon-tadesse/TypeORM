@@ -249,4 +249,5 @@ router.put('/users/:id', userController.editUser.bind(userController));
  */
 router.delete('/users/:id', userController.removeUser.bind(userController));
 
+
 export default router;
