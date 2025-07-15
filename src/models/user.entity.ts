@@ -16,6 +16,13 @@ export class User {
 
   @Column({ default: false })
   isVerified!: boolean;
+  
   @Column({ nullable: true })
 verificationToken!: string;
+
+  @Column({ nullable: true })
+  resetToken?: string;
+
+  @Column({ nullable: true })
+  resetTokenExpiry?: Date;
 }
