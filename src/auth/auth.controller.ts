@@ -8,7 +8,7 @@ import { plainToInstance } from 'class-transformer';
 
 export class AuthController {
   private authService = new AuthService();
-
+//registration
   register: RequestHandler = async (req: Request, res: Response) => {
     const dto = plainToInstance(LoginDto, req.body);
     const errors = await validate(dto);

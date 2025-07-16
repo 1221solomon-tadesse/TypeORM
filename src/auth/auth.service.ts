@@ -5,7 +5,7 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
 import { LoginDto } from './dtos/login.dto';
 import crypto from 'crypto';
-import { Any } from 'typeorm';
+// import { Any } from 'typeorm';
 
 export class AuthService {
   private userRepo = AppDataSource.getRepository(User);
@@ -118,7 +118,7 @@ export class AuthService {
     if (!user) throw new Error('User not found');
 
     const token = crypto.randomBytes(32).toString('hex');
-    user.resetToken = token;
+    user.resetToken = token;  
     user.resetTokenExpiry = new Date(Date.now() + 60 * 60 * 1000);
     await this.userRepo.save(user);
 
