@@ -27,4 +27,4 @@ This project demonstrates a backend implementation using TypeORM with PostgreSQL
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/reponame.git
+   git clone https://github.com/yourusername/TypeORM .git
