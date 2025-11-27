@@ -1,4 +1,3 @@
-TypeOrm practice implementation 
 # Backend Implementation
 
 This project demonstrates a backend implementation using TypeORM with PostgreSQL. It also integrates Swagger for API documentation.
